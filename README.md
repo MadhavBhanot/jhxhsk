@@ -5,7 +5,7 @@ A pilot tool for a GB utility's day-ahead buying desk. It answers two questions 
 1. **What wind forecast did we have when we had to buy?** For each delivery day, it shows the latest national wind forecast published before the decision time on the day before. The decision time defaults to 09:00, just before the EPEX (09:20) and N2EX (09:50) day-ahead auctions close.
 2. **How far off are those forecasts?** MAE, RMSE, bias, error as a % of mean output, the 10th/50th/90th percentile errors, error by hour of day and by lead time. On each day the forecast is drawn with a likely range, which gives one buying number: *"count on X GW"*.
 
-**Live app:** _add Vercel URL here_
+**Live app:** https://winddesk-pearl.vercel.app
 
 ## Run it
 
