@@ -32,7 +32,7 @@ For frontend hot reload, run `cd frontend && npm run dev` (port 5173; it proxies
 
 **Refresh the data snapshot:** `python -m app.fetch` (pulls from the public Elexon BMRS API; no key needed).
 
-**Deploy:** import the repo into Vercel. It detects the FastAPI app at `app/main.py`, `vercel.json` builds the React app, and the static mount is served from Vercel's CDN.
+**Deploy:** import the repo into Vercel. `vercel.json` uses [Vercel Services](https://vercel.com/docs/services): the React app (`frontend/`) is built and served as static files, the FastAPI app (`app.main:app`) runs as a function, and `/api/*` is routed to it. Docker runs the same FastAPI app, which also serves the built UI itself.
 
 ## Files
 
@@ -48,7 +48,7 @@ For frontend hot reload, run `cd frontend && npm run dev` (port 5173; it proxies
 | `frontend/src/api.ts` | Response types and fetch helper |
 | `frontend/src/index.css` | All styling |
 | `Dockerfile` | Multi-stage: Node builds the UI, Python serves API and UI |
-| `vercel.json` | Vercel build command for the UI |
+| `vercel.json` | Vercel Services config: `web` (Vite) and `api` (FastAPI) services, with `/api/*` routed to the API |
 | `docs/video-outline.md` | Script for the demo video |
 
 ## Method
