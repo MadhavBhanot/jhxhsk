@@ -1,0 +1,198 @@
+/* ─── Tokens ─────────────────────────────────────────────────────────────
+   Palette is taken from the "Phantom Arc" background: black void, electric
+   blue arc, ice-white text, and a sand-rose edge used as the one warm accent. */
+:root {
+  --void: #000;
+  --ink: #e0e8ff;
+  --ink-2: rgba(224, 232, 255, 0.66);
+  --ink-3: rgba(224, 232, 255, 0.42);
+  --hair: rgba(224, 232, 255, 0.1);
+  --electric: #0c18d2;
+  --blue: #6f86ff;
+  --ice: #b8c6ff;
+  --rose: #e2bfbb;
+
+  --glass-fill: linear-gradient(160deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.045) 45%, rgba(255, 255, 255, 0.07) 100%);
+  --glass-blur: blur(40px) saturate(1.8) brightness(1.08);
+  --glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -1px 0 rgba(255, 255, 255, 0.04), 0 30px 60px -24px rgba(0, 0, 0, 0.75);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+  --r-xl: 32px;
+  --r-lg: 26px;
+  --r-pill: 999px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--void); color: var(--ink); font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+code { font-family: var(--mono); font-size: 0.86em; color: var(--ice); }
+::selection { background: rgba(111, 134, 255, 0.45); }
+
+/* ─── Background: "Phantom Arc" (auragradients.vercel.app) ───────────────
+   Three rings of one ellipse centred above the box, screened/lightened onto
+   black. It frames the hero only and scrolls away, so data sits on calm black. */
+.sky { position: absolute; top: 0; left: 0; right: 0; height: 640px; z-index: -1; overflow: hidden; background: var(--void); isolation: isolate; -webkit-mask-image: linear-gradient(#000 75%, transparent); mask-image: linear-gradient(#000 75%, transparent); }
+.sky i { position: absolute; inset: 0; }
+.sky .arc { mix-blend-mode: screen; filter: blur(20px); background: radial-gradient(ellipse 120% 145% at 50% -50%, transparent 60%, rgb(12, 24, 210) 78%, transparent 85%); }
+.sky .haze { mix-blend-mode: screen; filter: blur(70px); opacity: 0.9; background: radial-gradient(ellipse 120% 145% at 50% -50%, transparent 55%, rgba(12, 24, 210, 0.4) 80%, transparent 100%); }
+.sky .edge { mix-blend-mode: lighten; filter: blur(20px); opacity: 0.8; background: radial-gradient(ellipse 120% 145% at 50% -50%, transparent 83.5%, #c8a8a6 84.5%, transparent 85.5%); }
+body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--grain); opacity: 0.08; mix-blend-mode: overlay; }
+
+.shell { max-width: 1160px; margin: 0 auto; padding: 20px 24px 96px; }
+
+/* ─── Frosted glass ──────────────────────────────────────────────────────
+   Fill gradient + heavy backdrop blur + specular top edge + a gradient
+   hairline border drawn with a masked pseudo-element. */
+.glass { position: relative; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow); }
+.glass::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.08) 35%, rgba(255, 255, 255, 0.04) 65%, rgba(184, 198, 255, 0.28));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.glass::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--grain); opacity: 0.12; mix-blend-mode: overlay; }
+
+/* ─── Nav ── */
+.nav { position: sticky; top: 16px; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 20px; border-radius: var(--r-pill); }
+.nav > * { position: relative; z-index: 1; }
+.brand { display: flex; align-items: center; gap: 10px; font: 400 24px/1 var(--serif); letter-spacing: -0.01em; }
+.brand img { width: 22px; height: 22px; }
+.seg { position: relative; z-index: 1; display: flex; gap: 2px; padding: 3px; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.35); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 0 0 1px var(--hair); }
+.seg button { border: 0; background: none; padding: 7px 16px; border-radius: var(--r-pill); cursor: pointer; color: var(--ink-2); font-weight: 500; font-size: 14px; transition: color 0.15s; }
+.seg button:hover { color: var(--ink); }
+.seg button.on { color: #fff; background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+.chip { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; font: 12px var(--mono); color: var(--ink-2); padding: 7px 14px; border-radius: var(--r-pill); box-shadow: inset 0 0 0 1px var(--hair); }
+.chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 8px var(--rose); }
+
+/* ─── Hero ── */
+.hero { padding: 80px 0 40px; text-align: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px; font: 500 11.5px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.eyebrow::before, .eyebrow::after { content: ''; width: 28px; height: 1px; background: linear-gradient(90deg, transparent, var(--ink-3)); }
+.eyebrow::after { transform: scaleX(-1); }
+.hero h1 { margin: 0 auto; max-width: 20ch; text-wrap: balance; font: 400 clamp(44px, 7vw, 92px)/0.98 var(--serif); letter-spacing: -0.025em; }
+.hero h1 em { font-style: italic; white-space: nowrap; padding-right: 0.06em; background: linear-gradient(100deg, #fff 10%, var(--ice) 45%, var(--blue) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { text-wrap: pretty; max-width: 54ch; margin: 22px auto 0; color: var(--ink-2); font-size: 16px; }
+
+/* ─── Cards ── */
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.controls.single { grid-template-columns: 1fr; max-width: 660px; margin-inline: auto; }
+.card { border-radius: var(--r-lg); padding: 20px 22px; min-width: 0; }
+.card > * { position: relative; z-index: 1; }
+.card h2 { display: flex; align-items: center; gap: 10px; margin: 0; font: 600 15px var(--sans); }
+.step { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 500 11px var(--mono); color: var(--ice); background: rgba(111, 134, 255, 0.14); box-shadow: inset 0 0 0 1px rgba(111, 134, 255, 0.45); }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.pill { font: 500 12px var(--mono); padding: 4px 10px; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.3); box-shadow: inset 0 0 0 1px var(--hair); white-space: nowrap; color: var(--ice); }
+.muted { color: var(--ink-2); margin: 0 0 12px; }
+.muted b { color: var(--ink); font-weight: 600; }
+.small { font-size: 13px; }
+
+/* ─── Decision timeline ── */
+.track { position: relative; height: 40px; margin-top: 18px; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.35); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6), inset 0 0 0 1px var(--hair); }
+.track::before { content: ''; position: absolute; inset: 0 20px; background: repeating-linear-gradient(90deg, var(--hair) 0 1px, transparent 1px calc(100% / 24)); mask: linear-gradient(transparent 30%, #000 30% 70%, transparent 70%); }
+.known { position: absolute; inset: 0 auto 0 0; border-radius: var(--r-pill) 0 0 var(--r-pill); background: linear-gradient(90deg, rgba(12, 24, 210, 0.05), rgba(60, 80, 255, 0.4)); transition: width 0.2s ease-out; }
+.run { position: absolute; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: rgba(224, 232, 255, 0.22); transition: all 0.2s; }
+.run.in { background: var(--ice); }
+.run.used { width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; background: #fff; box-shadow: 0 0 0 4px rgba(111, 134, 255, 0.3); }
+.gate { position: absolute; top: 7px; bottom: 7px; border-left: 1px dashed var(--rose); opacity: 0.85; }
+.handle { position: absolute; top: -6px; bottom: -6px; width: 22px; margin-left: -11px; border-radius: var(--r-pill); background: linear-gradient(180deg, #fff, #cfd8ff); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 4px 16px rgba(0, 0, 0, 0.6); transition: left 0.2s ease-out; pointer-events: none; }
+.handle::after { content: ''; position: absolute; inset: 15px 10px; border-radius: 1px; background: #1a2370; }
+.track input { position: absolute; inset: -8px 0; width: 100%; height: calc(100% + 16px); margin: 0; opacity: 0; cursor: ew-resize; }
+.track:has(input:focus-visible) { outline: 2px solid var(--blue); outline-offset: 4px; }
+.ticks { position: relative; height: 18px; margin-top: 10px; font: 11px var(--mono); color: var(--ink-3); }
+.ticks span { position: absolute; }
+.key { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 10px 0 0; color: var(--ink-2); }
+.key span { display: inline-flex; align-items: center; gap: 7px; }
+.key i { display: inline-block; }
+.k-run { width: 7px; height: 7px; border-radius: 50%; background: var(--ice); box-shadow: 0 0 6px var(--blue); }
+.k-gate { height: 12px; border-left: 1px dashed var(--rose); }
+
+/* ─── Delivery-day strip ── */
+.strip { display: flex; gap: 6px; overflow-x: auto; padding: 14px 2px 6px; scroll-snap-type: x proximity; scrollbar-width: none; mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.strip button { position: relative; flex: 0 0 44px; display: grid; justify-items: center; gap: 4px; padding: 8px 0 10px; border: 0; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.28); box-shadow: inset 0 0 0 1px var(--hair); cursor: pointer; scroll-snap-align: center; transition: background 0.15s, box-shadow 0.15s; }
+.strip button:hover { background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 1px rgba(224, 232, 255, 0.22); }
+.strip button.on { background: var(--ink); color: #0a0f2e; box-shadow: none; }
+.wd { font: 11px var(--mono); color: var(--ink-3); }
+.strip button.on .wd { color: rgba(10, 15, 46, 0.6); }
+.dn { font: 600 15px var(--sans); }
+.miss { width: 12px; height: 12px; border-radius: 50%; background: var(--rose); opacity: 0.9; }
+.strip button.on .miss { background: var(--electric); }
+
+/* ─── Signature panel: electric-blue fan chart ── */
+.deep {
+  position: relative; overflow: hidden; isolation: isolate; border-radius: var(--r-xl); padding: 30px 30px 22px; margin-bottom: 16px; color: #fff;
+  background: linear-gradient(180deg, rgba(22, 28, 72, 0.6) 0%, rgba(6, 8, 24, 0.8) 100%);
+  -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px var(--hair), 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+}
+/* one quiet electric glow along the top edge, echoing the arc */
+.deep::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(55% 35% at 50% 0%, rgba(12, 24, 210, 0.5), transparent 75%); }
+/* registration marks in the four corners, like an instrument bezel */
+.deep::after {
+  content: ''; position: absolute; inset: 14px; pointer-events: none; --m: rgba(224, 232, 255, 0.28);
+  background:
+    linear-gradient(var(--m), var(--m)) 0 0 / 12px 1px, linear-gradient(var(--m), var(--m)) 0 0 / 1px 12px,
+    linear-gradient(var(--m), var(--m)) 100% 0 / 12px 1px, linear-gradient(var(--m), var(--m)) 100% 0 / 1px 12px,
+    linear-gradient(var(--m), var(--m)) 0 100% / 12px 1px, linear-gradient(var(--m), var(--m)) 0 100% / 1px 12px,
+    linear-gradient(var(--m), var(--m)) 100% 100% / 12px 1px, linear-gradient(var(--m), var(--m)) 100% 100% / 1px 12px;
+  background-repeat: no-repeat;
+}
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 10px; }
+.stats.four { grid-template-columns: repeat(4, 1fr); }
+.stat { display: grid; gap: 4px; align-content: start; padding: 0 20px; }
+.stat:first-child { padding-left: 0; }
+.stat + .stat { border-left: 1px solid; border-image: linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent) 1; }
+.stat-label { font: 500 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: rgba(224, 232, 255, 0.75); }
+.stat-value { font: 400 36px/1.1 var(--sans); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.stat p { margin: 0; font-size: 12.5px; line-height: 1.5; color: rgba(224, 232, 255, 0.72); max-width: 34ch; }
+.stat b { font-weight: 600; color: #fff; }
+.state { font: 13px var(--mono); opacity: 0.8; padding: 60px 0; text-align: center; margin: 0; }
+.on-deep { color: rgba(224, 232, 255, 0.78); }
+.k-line { width: 18px; height: 2px; }
+.k-line.dash { background: repeating-linear-gradient(90deg, #fff 0 5px, transparent 5px 8px); }
+.k-line.sun { background: var(--rose); box-shadow: 0 0 6px var(--rose); }
+.k-band { width: 18px; height: 10px; border-radius: 3px; background: linear-gradient(180deg, rgba(111, 134, 255, 0.25), rgba(111, 134, 255, 0.5) 30% 70%, rgba(111, 134, 255, 0.25)); }
+.tip { background: rgba(2, 4, 30, 0.82); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid rgba(184, 198, 255, 0.25); color: #fff; padding: 10px 12px; border-radius: 12px; font: 12px/1.6 var(--mono); }
+
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+/* Below the arc there is nothing behind the glass to colour it, so these cards carry
+   their own tint: a light source top-left in the colour of the series they plot. */
+.grid3 .card { --tint: 111, 134, 255; --base: 34, 54, 232; background: radial-gradient(100% 75% at 10% 0%, rgba(var(--tint), 0.5), transparent 70%), linear-gradient(170deg, rgba(var(--base), 0.5) 0%, rgba(var(--base), 0.2) 50%, rgba(6, 8, 30, 0.7) 100%); }
+.grid3 .card:first-child { --tint: 236, 196, 192; --base: 120, 70, 120; }
+
+/* ─── Method ── */
+/* reading surface: denser frost so long text keeps contrast over the arc */
+.method { max-width: 760px; margin: 0 auto; padding: 30px 36px; background: linear-gradient(160deg, rgba(14, 18, 48, 0.78), rgba(4, 6, 24, 0.7)); }
+.method h2 { font: 400 28px var(--serif); margin: 26px 0 8px; padding-top: 22px; border-top: 1px solid var(--hair); }
+.method h2:first-child { margin-top: 0; padding-top: 0; border: 0; }
+.method p, .method li { color: var(--ink-2); }
+.method b { color: var(--ink); }
+.method li { margin-bottom: 6px; }
+.method li::marker { color: var(--blue); }
+
+@media (max-width: 900px) {
+  .controls { grid-template-columns: 1fr; }
+  .stats, .stats.four { grid-template-columns: 1fr 1fr; row-gap: 18px; }
+  .stat:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .grid3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .shell { padding: 12px 16px 64px; }
+  .nav { flex-wrap: wrap; justify-content: center; border-radius: 24px; padding: 10px; }
+  .chip { display: none; }
+  .hero { padding: 48px 0 28px; }
+  .deep { padding: 24px 18px 16px; border-radius: 24px; }
+  .stat { padding: 0 12px; }
+  .stat-value { font-size: 26px; }
+  .method { padding: 22px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .known, .handle, .run, .strip button { transition: none; }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: rgba(14, 18, 48, 0.92); }
+}
