@@ -49,7 +49,6 @@ For frontend hot reload, run `cd frontend && npm run dev` (port 5173; it proxies
 | `frontend/src/index.css` | All styling |
 | `Dockerfile` | Multi-stage: Node builds the UI, Python serves API and UI |
 | `vercel.json` | Vercel Services config: `web` (Vite) and `api` (FastAPI) services, with `/api/*` routed to the API |
-| `docs/video-outline.md` | Script for the demo video |
 
 ## Method
 
